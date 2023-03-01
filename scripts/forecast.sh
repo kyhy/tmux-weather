@@ -5,9 +5,14 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$CURRENT_DIR/helpers.sh"
 
 get_forecast() {
-  local format=$(get_tmux_option @forecast-format "%C+%t+%w")
+  # local format=$(get_tmux_option @forecast-format "%C+%t+%w")
+  local format=$(get_tmux_option @forecast-format "%C+%f+%m")
   local location=$(get_tmux_option @forecast-location "") # Let wttr.in figure out the location
-  curl "http://wttr.in/$location?format=$format"
+  # curl "http://wttr.in/$location?format=$format"
+  curl "http://wttr.in/$location?format=$format&m"
+
+  # local forecast=$(curl http://wttr.in/?format=$format)
+  # local forecast=$(curl -s "wttr.in/?format=$format&m")
 }
 
 get_cached_forecast() {
@@ -33,7 +38,8 @@ get_cached_forecast() {
 }
 
 print_forecast() {
-  local char_limit=$(get_tmux_option @forecast-char-limit 75)
+  # local char_limit=$(get_tmux_option @forecast-char-limit 75)
+  local char_limit=$(get_tmux_option @forecast-char-limit 200)
   local forecast=$(get_cached_forecast)
   echo ${forecast:0:$char_limit}
 }
